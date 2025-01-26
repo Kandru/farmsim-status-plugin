@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<modDesc descVersion="94">
+    <author>Kandru</author>
+    <version>1.0.0.0</version>
+    <title>
+        <en>FarmSim Status</en>
+    </title>
+    <description>
+        <en>
+<![CDATA[This Mod exports server data and displays it on a website of your choice. Works best with our GUI tool https://github.com/Kandru/farmsim-status-gui :)
+
+Changelog v1.0.0.0
+- Initial Version]]>
+        </en>
+    </description>
+    <iconFilename>icon.dds</iconFilename>
+    <multiplayer supported="true" />
+    <extraSourceFiles>
+        <sourceFile filename="src/Status.lua" />
+        <sourceFile filename="src/Utilities.lua" />
+    </extraSourceFiles>
+</modDesc>
