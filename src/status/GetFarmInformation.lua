@@ -11,22 +11,45 @@ function FarmSimStatus:getFarmInformation()
             local xmlFarmId = "server.farms.id_" .. i
             if farm.showInFarmScreen == true then
                 -- farm infos
-                self.DynamicXmlFile:setString(xmlFarmId .. "#name", farm.name)
-                self.DynamicXmlFile:setInt(xmlFarmId .. "#farmId", farm.farmId)
-                self.DynamicXmlFile:setInt(xmlFarmId .. "#money", farm.money)
-                self.DynamicXmlFile:setInt(xmlFarmId .. "#loanMax", farm.loanMax)
-                self.DynamicXmlFile:setInt(xmlFarmId .. "#lastMoneySent", farm.lastMoneySent)
+                for farmKey, farmValue in pairs(farm) do
+                    if farmValue ~= nil and farmKey ~= "password" then
+                        if type(farmValue) == "number" then
+                            if math.floor(farmValue) == farmValue then
+                                self.DynamicXmlFile:setInt(xmlFarmId .. "#" .. farmKey, farmValue)
+                            else
+                                self.DynamicXmlFile:setFloat(xmlFarmId .. "#" .. farmKey, farmValue)
+                            end
+                        elseif type(farmValue) == "boolean" then
+                            self.DynamicXmlFile:setBool(xmlFarmId .. "#" .. farmKey, farmValue)
+                        elseif type(farmValue) == "string" then
+                            self.DynamicXmlFile:setString(xmlFarmId .. "#" .. farmKey, farmValue)
+                        else
+                            Utilities:print("error: farm->" .. farmKey .. "-> value is of " .. type(farmValue) .." type (Int/Float/Boolean/String expected)")
+                        end
+                    end
+                end
                 -- farm players
                 if farm.players ~= nil then
                     for _, player in ipairs(farm.players) do
-                        self.DynamicXmlFile:setString(xmlFarmId .. ".players." .. player.userId .. "#uniqueUserId", player.uniqueUserId)
-                        self.DynamicXmlFile:setString(xmlFarmId .. ".players." .. player.userId .. "#lastNickname", player.lastNickname)
-                        self.DynamicXmlFile:setString(xmlFarmId .. ".players." .. player.userId .. "#timeLastConnected", player.timeLastConnected)
-                        self.DynamicXmlFile:setBool(xmlFarmId .. ".players." .. player.userId .. "#isFarmManager", player.isFarmManager)
-                        -- player permissions
-                        if player.permissions ~= nil then
-                            for permName, permValue in pairs(player.permissions) do
-                                self.DynamicXmlFile:setBool(xmlFarmId .. ".players." .. player.userId .. ".permissions#" .. permName, permValue)
+                        for playerKey, playerValue in pairs(player) do
+                            if playerValue ~= nil then
+                                if type(playerValue) == "table" then
+                                    for entryName, entryValue in pairs(playerValue) do
+                                        self.DynamicXmlFile:setBool(xmlFarmId .. ".players." .. playerKey .. "#" .. entryName, entryValue)
+                                    end
+                                elseif type(playerValue) == "number" then
+                                    if math.floor(playerValue) == playerValue then
+                                        self.DynamicXmlFile:setInt(xmlFarmId .. ".players#" .. playerKey, playerValue)
+                                    else
+                                        self.DynamicXmlFile:setFloat(xmlFarmId .. ".players#" .. playerKey, playerValue)
+                                    end
+                                elseif type(playerValue) == "boolean" then
+                                    self.DynamicXmlFile:setBool(xmlFarmId .. ".players#" .. playerKey, playerValue)
+                                elseif type(playerValue) == "string" then
+                                    self.DynamicXmlFile:setString(xmlFarmId .. ".players#" .. playerKey, playerValue)
+                                else
+                                    Utilities:print("error: farm->players->" .. playerKey .. "-> value is of " .. type(playerValue) .." type (Int/Float/Boolean/String expected)")
+                                end
                             end
                         end
                     end
@@ -47,7 +70,7 @@ function FarmSimStatus:getFarmInformation()
                                 elseif type(statValue) == "string" then
                                     self.DynamicXmlFile:setString(xmlFarmId .. ".statistics#" .. statName, statValue)
                                 else
-                                    Utilities:print("error: farm->statistics->" .. statName .. "->value is of " .. type(statValue) .." type (Int/Float/Boolean/String expected)")
+                                    Utilities:print("error: farm->statistics->" .. statName .. "-> value is of " .. type(statValue) .." type (Int/Float/Boolean/String expected)")
                                 end
                             end                            
                         end
@@ -77,7 +100,7 @@ function FarmSimStatus:getFarmInformation()
                                         self.DynamicXmlFile:setString(xmlFarmId .. ".statistics." .. stat.name .. "#session", stat.value.session)
                                         self.DynamicXmlFile:setString(xmlFarmId .. ".statistics." .. stat.name .. "#total", stat.value.total)
                                     else
-                                        Utilities:print("error: farm->statistics->" .. stat.name .. "->value is of " .. type(stat.value.session) .." type (Int/Float/Boolean/String expected)")
+                                        Utilities:print("error: farm->statistics->" .. stat.name .. "-> value is of " .. type(stat.value.session) .." type (Int/Float/Boolean/String expected)")
                                     end
                                 end
                             end
@@ -105,7 +128,7 @@ function FarmSimStatus:getFarmInformation()
                             elseif type(stat.value) == "string" then
                                 self.DynamicXmlFile:setString(xmlFarmId .. ".finances#" .. stat.name, stat.value)
                             else
-                                Utilities:print("error: farm->finances->" .. stat.name .. "->value is of " .. type(stat.value) .." type (Int/Float/Boolean/String expected)")
+                                Utilities:print("error: farm->finances->" .. stat.name .. "-> value is of " .. type(stat.value) .." type (Int/Float/Boolean/String expected)")
                             end
                         end
                     end
