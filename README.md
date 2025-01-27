@@ -23,6 +23,11 @@ Coming soon
 
 Simply overwrite the .zip file with the latest release.
 
+## Development
+
+- make code changes
+- check code changes with the official TestRunner tool: https://forum.giants-software.com/viewtopic.php?t=187502
+
 ## License
 
 Released under [GPLv3](/LICENSE) by [@Kandru](https://github.com/Kandru).
