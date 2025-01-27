@@ -28,6 +28,13 @@ Simply overwrite the .zip file with the latest release.
 - make code changes
 - check code changes with the official TestRunner tool: https://forum.giants-software.com/viewtopic.php?t=187502
 
+## Other useful stuff
+
+- FS25 data dump https://github.com/w33zl/FS25_DataDump
+- FS25 Modding Guidelines https://forum.giants-software.com/viewtopic.php?t=209170
+- FS25 TestRuner Tool https://forum.giants-software.com/viewtopic.php?t=187502
+
+
 ## License
 
 Released under [GPLv3](/LICENSE) by [@Kandru](https://github.com/Kandru).
