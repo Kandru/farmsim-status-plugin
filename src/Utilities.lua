@@ -1,3 +1,5 @@
-function Utils:print(text, ...)
+Utilities = {}
+
+function Utilities:print(text, ...)
     Logging.info(text, ...)
 end

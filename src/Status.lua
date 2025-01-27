@@ -1,60 +1,48 @@
-Status = {}
-Status_mp = Class(Status)
+FarmSimStatus = {}
+FarmSimStatus.modDir = getUserProfileAppPath()
+FarmSimStatus.xmlName = "FS25_FarmsimStatus.xml"
+FarmSimStatus.xmlFile = nil
+FarmSimStatus.updateInterval = 1000 * 60 * 1, -- update every minute
 
-function Status:new()
-    local data = {
-        -- mod data
-        checkInterval = 1 * 1000 * 60, -- check every minute
-        -- xml data
-        xmlFile = nil,
-        -- game data
-        fields = {}
-    }
-    setmetatable(data, self)
-    self.__index = self
-    return data
-end
-
--- initialization
-function initialize()
-    Utils:print("initialize()")
-    Status:initialize()
-end
-
-function Status:initialize()
-    Utils:print("Status:initialize()")
+-- initialize plugin
+function FarmSimStatus:init()
+    Utils:print("FarmSimStatus:init()")
+    if (g_currentMission:getIsServer() == false) then
+        Utils:print("error: not a server")
+        return
+    end
     self:heartbeat()
 end
 
 -- heartbeat which updates data
-function Status:heartbeat()
-    Utils:print("Status:heartbeat()")
+function FarmSimStatus:heartbeat()
+    Utils:print("FarmSimStatus:heartbeat()")
     -- create xml file
     self:createXmlFile()
     -- get server information
     self:updateServerInformation()
     -- save xml file
     self:saveXmlFile()
-    -- re-check at checkInterval
-    addTimer(checkInterval, "heartbeat", self)
+    -- re-check at updateInterval
+    addTimer(updateInterval, "heartbeat", self)
 end
 
 -- function to create xml file
-function Status:createXmlFile()
-    Utils:print("Status:createXmlFile()")
-    self.xmlFile = XMLFile.create("Server", getUserProfileAppPath() .. "/" .. "FS25_FarmsimStatus.xml", "Server")
+function FarmSimStatus:createXmlFile()
+    Utils:print("FarmSimStatus:createXmlFile()")
+    self.xmlFile = XMLFile.create("Server", self.modDir .. "/" .. self.xmlName, "Server")
 end
 
 -- function to save xml file
-function Status:saveXmlFile()
-    Utils:print("Status:saveXmlFile()")
+function FarmSimStatus:saveXmlFile()
+    Utils:print("FarmSimStatus:saveXmlFile()")
     self.xmlFile:save()
     self.xmlFile:delete()
 end
 
 -- function to update server information
-function Status:updateServerInformation()
-    Utils:print("Status:updateServerInformation()")
+function FarmSimStatus:updateServerInformation()
+    Utils:print("FarmSimStatus:updateServerInformation()")
     if self.xmlFile == nil then
         Utils:print("error: xmlFile is nil")
         return
@@ -73,5 +61,5 @@ function Status:updateServerInformation()
     self.xmlFile:setInt("Server.map#height", g_currentMission.localMapHeight)
 end
 
--- add initialize function to Mission
-FSBaseMission.onStartMission = Utils.appendedFunction(FSBaseMission.onStartMission, initialize)
+g_FarmSimStatusPlugin = FarmSimStatus()
+addModEventListener(g_FarmSimStatusPlugin)
