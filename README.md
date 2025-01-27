@@ -33,7 +33,7 @@ Simply overwrite the .zip file with the latest release.
 - FS25 data dump https://github.com/w33zl/FS25_DataDump
 - FS25 Modding Guidelines https://forum.giants-software.com/viewtopic.php?t=209170
 - FS25 TestRuner Tool https://forum.giants-software.com/viewtopic.php?t=187502
-
+- FS22 Lua Doc https://gdn.giants-software.com/documentation_scripting_fs22.php
 
 ## License
 
