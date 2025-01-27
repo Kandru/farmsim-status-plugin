@@ -17,6 +17,8 @@ Changelog v1.0.0.0
     <multiplayer supported="true" />
     <extraSourceFiles>
         <sourceFile filename="src/Status.lua" />
+        <sourceFile filename="src/status/GetServerInformation.lua" />
+        <sourceFile filename="src/status/GetFarmInformation.lua" />
         <sourceFile filename="src/Utilities.lua" />
     </extraSourceFiles>
 </modDesc>
