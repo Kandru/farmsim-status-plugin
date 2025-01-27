@@ -32,32 +32,53 @@ function FarmSimStatus:getFarmInformation()
                     end
                 end
                 -- farm statistics
-                if farm.stats ~= nil and farm.stats.statistics ~= nil then
-                    -- sort by alphabet
-                    local sortedStatistics = {}
-                    for statName, statValue in pairs(farm.stats.statistics) do
-                        table.insert(sortedStatistics, {name = statName, value = statValue})
-                    end
-                    table.sort(sortedStatistics, function(a, b) return a.name < b.name end)
-                    for _, stat in ipairs(sortedStatistics) do
-                        if type(stat.value) == "table" then
-                            if stat.value.session ~= nil and stat.value.total ~= nil then
-                                if type(stat.value.session) == "number" then
-                                    if math.floor(stat.value.session) == stat.value.session then
-                                        self.DynamicXmlFile:setInt(xmlFarmId .. ".statistics." .. stat.name .. "#session", stat.value.session)
-                                        self.DynamicXmlFile:setInt(xmlFarmId .. ".statistics." .. stat.name .. "#total", stat.value.total)
+                if farm.stats ~= nil then
+                    for statName, statValue in pairs(farm.stats) do
+                        if statValue ~= nil then
+                            if type(statValue) ~= "table" then
+                                if type(statValue) == "number" then
+                                    if math.floor(statValue) == statValue then
+                                        self.DynamicXmlFile:setInt(xmlFarmId .. ".statistics#" .. statName, statValue)
                                     else
-                                        self.DynamicXmlFile:setFloat(xmlFarmId .. ".statistics." .. stat.name .. "#session", stat.value.session)
-                                        self.DynamicXmlFile:setFloat(xmlFarmId .. ".statistics." .. stat.name .. "#total", stat.value.total)
+                                        self.DynamicXmlFile:setFloat(xmlFarmId .. ".statistics#" .. statName, statValue)
                                     end
-                                elseif type(stat.value.session) == "boolean" then
-                                    self.DynamicXmlFile:setBool(xmlFarmId .. ".statistics." .. stat.name .. "#session", stat.value.session)
-                                    self.DynamicXmlFile:setBool(xmlFarmId .. ".statistics." .. stat.name .. "#total", stat.value.total)
-                                elseif type(stat.value.session) == "string" then
-                                    self.DynamicXmlFile:setString(xmlFarmId .. ".statistics." .. stat.name .. "#session", stat.value.session)
-                                    self.DynamicXmlFile:setString(xmlFarmId .. ".statistics." .. stat.name .. "#total", stat.value.total)
+                                elseif type(statValue) == "boolean" then
+                                    self.DynamicXmlFile:setBool(xmlFarmId .. ".statistics#" .. statName, statValue)
+                                elseif type(statValue) == "string" then
+                                    self.DynamicXmlFile:setString(xmlFarmId .. ".statistics#" .. statName, statValue)
                                 else
-                                    Utilities:print("error: farm->statistics->" .. stat.name .. "->value is of " .. type(stat.value.session) .." type (Int/Float/Boolean/String expected)")
+                                    Utilities:print("error: farm->statistics->" .. statName .. "->value is of " .. type(statValue) .." type (Int/Float/Boolean/String expected)")
+                                end
+                            end                            
+                        end
+                    end
+                    if farm.stats.statistics ~= nil then
+                        -- sort by alphabet
+                        local sortedStatistics = {}
+                        for statName, statValue in pairs(farm.stats.statistics) do
+                            table.insert(sortedStatistics, {name = statName, value = statValue})
+                        end
+                        table.sort(sortedStatistics, function(a, b) return a.name < b.name end)
+                        for _, stat in ipairs(sortedStatistics) do
+                            if type(stat.value) == "table" then
+                                if stat.value.session ~= nil and stat.value.total ~= nil then
+                                    if type(stat.value.session) == "number" then
+                                        if math.floor(stat.value.session) == stat.value.session then
+                                            self.DynamicXmlFile:setInt(xmlFarmId .. ".statistics." .. stat.name .. "#session", stat.value.session)
+                                            self.DynamicXmlFile:setInt(xmlFarmId .. ".statistics." .. stat.name .. "#total", stat.value.total)
+                                        else
+                                            self.DynamicXmlFile:setFloat(xmlFarmId .. ".statistics." .. stat.name .. "#session", stat.value.session)
+                                            self.DynamicXmlFile:setFloat(xmlFarmId .. ".statistics." .. stat.name .. "#total", stat.value.total)
+                                        end
+                                    elseif type(stat.value.session) == "boolean" then
+                                        self.DynamicXmlFile:setBool(xmlFarmId .. ".statistics." .. stat.name .. "#session", stat.value.session)
+                                        self.DynamicXmlFile:setBool(xmlFarmId .. ".statistics." .. stat.name .. "#total", stat.value.total)
+                                    elseif type(stat.value.session) == "string" then
+                                        self.DynamicXmlFile:setString(xmlFarmId .. ".statistics." .. stat.name .. "#session", stat.value.session)
+                                        self.DynamicXmlFile:setString(xmlFarmId .. ".statistics." .. stat.name .. "#total", stat.value.total)
+                                    else
+                                        Utilities:print("error: farm->statistics->" .. stat.name .. "->value is of " .. type(stat.value.session) .." type (Int/Float/Boolean/String expected)")
+                                    end
                                 end
                             end
                         end
@@ -73,7 +94,6 @@ function FarmSimStatus:getFarmInformation()
                     table.sort(sortedFinances, function(a, b) return a.name < b.name end)
                     for _, stat in ipairs(sortedFinances) do
                         if stat.value ~= nil then
-                            
                             if type(stat.value) == "number" then
                                 if math.floor(stat.value) == stat.value then
                                     self.DynamicXmlFile:setInt(xmlFarmId .. ".finances#" .. stat.name, stat.value)
