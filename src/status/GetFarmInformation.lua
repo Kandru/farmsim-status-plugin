@@ -106,29 +106,57 @@ function FarmSimStatus:getFarmInformation()
                             end
                         end
                     end
-                end
-                -- farm finances
-                if farm.stats ~= nil and farm.stats.finances ~= nil then
-                    -- sort by alphabet
-                    local sortedFinances = {}
-                    for statName, statValue in pairs(farm.stats.finances) do
-                        table.insert(sortedFinances, {name = statName, value = statValue})
-                    end
-                    table.sort(sortedFinances, function(a, b) return a.name < b.name end)
-                    for _, stat in ipairs(sortedFinances) do
-                        if stat.value ~= nil then
-                            if type(stat.value) == "number" then
-                                if math.floor(stat.value) == stat.value then
-                                    self.DynamicXmlFile:setInt(xmlFarmId .. ".finances#" .. stat.name, stat.value)
+                    -- farm finances
+                    if farm.stats.finances ~= nil then
+                        -- sort by alphabet
+                        local sortedFinances = {}
+                        for statName, statValue in pairs(farm.stats.finances) do
+                            table.insert(sortedFinances, {name = statName, value = statValue})
+                        end
+                        table.sort(sortedFinances, function(a, b) return a.name < b.name end)
+                        for _, stat in ipairs(sortedFinances) do
+                            if stat.value ~= nil then
+                                if type(stat.value) == "number" then
+                                    if math.floor(stat.value) == stat.value then
+                                        self.DynamicXmlFile:setInt(xmlFarmId .. ".finances#" .. stat.name, stat.value)
+                                    else
+                                        self.DynamicXmlFile:setFloat(xmlFarmId .. ".finances#" .. stat.name, stat.value)
+                                    end
+                                elseif type(stat.value) == "boolean" then
+                                    self.DynamicXmlFile:setBool(xmlFarmId .. ".finances#" .. stat.name, stat.value)
+                                elseif type(stat.value) == "string" then
+                                    self.DynamicXmlFile:setString(xmlFarmId .. ".finances#" .. stat.name, stat.value)
                                 else
-                                    self.DynamicXmlFile:setFloat(xmlFarmId .. ".finances#" .. stat.name, stat.value)
+                                    Utilities:print("error: farm->finances->" .. stat.name .. "-> value is of " .. type(stat.value) .." type (Int/Float/Boolean/String expected)")
                                 end
-                            elseif type(stat.value) == "boolean" then
-                                self.DynamicXmlFile:setBool(xmlFarmId .. ".finances#" .. stat.name, stat.value)
-                            elseif type(stat.value) == "string" then
-                                self.DynamicXmlFile:setString(xmlFarmId .. ".finances#" .. stat.name, stat.value)
-                            else
-                                Utilities:print("error: farm->finances->" .. stat.name .. "-> value is of " .. type(stat.value) .." type (Int/Float/Boolean/String expected)")
+                            end
+                        end
+                    end
+                    -- farm finances history
+                    if farm.stats.financesHistory ~= nil then
+                        for key, stats in ipairs(farm.stats.financesHistory) do
+                            -- sort by alphabet
+                            local sortedFinances = {}
+                            for statName, statValue in pairs(stats) do
+                                table.insert(sortedFinances, {name = statName, value = statValue})
+                            end
+                            table.sort(sortedFinances, function(a, b) return a.name < b.name end)
+                            for _, stat in ipairs(sortedFinances) do
+                                if stat.value ~= nil then
+                                    if type(stat.value) == "number" then
+                                        if math.floor(stat.value) == stat.value then
+                                            self.DynamicXmlFile:setInt(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
+                                        else
+                                            self.DynamicXmlFile:setFloat(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
+                                        end
+                                    elseif type(stat.value) == "boolean" then
+                                        self.DynamicXmlFile:setBool(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
+                                    elseif type(stat.value) == "string" then
+                                        self.DynamicXmlFile:setString(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
+                                    else
+                                        Utilities:print("error: farm->financesHistory->" .. key .."->" .. stat.name .. "-> value is of " .. type(stat.value) .." type (Int/Float/Boolean/String expected)")
+                                    end
+                                end
                             end
                         end
                     end
