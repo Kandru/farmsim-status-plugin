@@ -151,14 +151,14 @@ function FarmSimStatus:getFarmInformation()
                                 if stat.value ~= nil then
                                     if type(stat.value) == "number" then
                                         if math.floor(stat.value) == stat.value then
-                                            self.DynamicXmlFile:setInt(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
+                                            self.DynamicXmlFile:setInt(xmlFarmId .. ".financesHistory.month_" .. key .. "#" .. stat.name, stat.value)
                                         else
-                                            self.DynamicXmlFile:setFloat(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
+                                            self.DynamicXmlFile:setFloat(xmlFarmId .. ".financesHistory.month_" .. key .. "#" .. stat.name, stat.value)
                                         end
                                     elseif type(stat.value) == "boolean" then
-                                        self.DynamicXmlFile:setBool(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
+                                        self.DynamicXmlFile:setBool(xmlFarmId .. ".financesHistory.month_" .. key .. "#" .. stat.name, stat.value)
                                     elseif type(stat.value) == "string" then
-                                        self.DynamicXmlFile:setString(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
+                                        self.DynamicXmlFile:setString(xmlFarmId .. ".financesHistory.month_" .. key .. "#" .. stat.name, stat.value)
                                     elseif (type(farmValue) ~= "table") then
                                         Utilities:print("error: farm->financesHistory->" .. key .."->" .. stat.name .. "-> value is of " .. type(stat.value) .." type (Int/Float/Boolean/String expected)")
                                     end
