@@ -23,6 +23,7 @@ function FarmSimStatus:heartbeat()
     -- get information
     self:getServerInformation()
     self:getFarmInformation()
+    self:getFarmlandInformation()
     -- save xml file
     self:saveXmlFile()
     -- re-check at updateInterval
