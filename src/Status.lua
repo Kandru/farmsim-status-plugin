@@ -12,7 +12,7 @@ function FarmSimStatus:init()
         return
     end
     -- run hearbeat after one second to allow everything to initialize
-    addTimer(30000, "heartbeat", self)
+    addTimer(1000 * 10, "heartbeat", self)
 end
 
 -- heartbeat which updates data
