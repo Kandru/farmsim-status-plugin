@@ -23,7 +23,7 @@ function FarmSimStatus:getFarmInformation()
                             self.DynamicXmlFile:setBool(xmlFarmId .. "#" .. farmKey, farmValue)
                         elseif type(farmValue) == "string" then
                             self.DynamicXmlFile:setString(xmlFarmId .. "#" .. farmKey, farmValue)
-                        else
+                        elseif (type(farmValue) ~= "table") then
                             Utilities:print("error: farm->" .. farmKey .. "-> value is of " .. type(farmValue) .." type (Int/Float/Boolean/String expected)")
                         end
                     end
@@ -132,7 +132,7 @@ function FarmSimStatus:getFarmInformation()
                                     self.DynamicXmlFile:setBool(xmlFarmId .. ".finances#" .. stat.name, stat.value)
                                 elseif type(stat.value) == "string" then
                                     self.DynamicXmlFile:setString(xmlFarmId .. ".finances#" .. stat.name, stat.value)
-                                else
+                                elseif (type(farmValue) ~= "table") then
                                     Utilities:print("error: farm->finances->" .. stat.name .. "-> value is of " .. type(stat.value) .." type (Int/Float/Boolean/String expected)")
                                 end
                             end
@@ -159,7 +159,7 @@ function FarmSimStatus:getFarmInformation()
                                         self.DynamicXmlFile:setBool(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
                                     elseif type(stat.value) == "string" then
                                         self.DynamicXmlFile:setString(xmlFarmId .. ".financesHistory." .. key .. "#" .. stat.name, stat.value)
-                                    else
+                                    elseif (type(farmValue) ~= "table") then
                                         Utilities:print("error: farm->financesHistory->" .. key .."->" .. stat.name .. "-> value is of " .. type(stat.value) .." type (Int/Float/Boolean/String expected)")
                                     end
                                 end
