@@ -30,28 +30,34 @@ function FarmSimStatus:getFarmInformation()
                 end
                 -- farm players
                 if farm.players ~= nil then
-                    for _, player in ipairs(farm.players) do
+                    for key, player in ipairs(farm.players) do
                         for playerKey, playerValue in pairs(player) do
                             if playerValue ~= nil then
                                 if type(playerValue) == "table" then
                                     for entryName, entryValue in pairs(playerValue) do
-                                        self.DynamicXmlFile:setBool(xmlFarmId .. ".players." .. playerKey .. "#" .. entryName, entryValue)
+                                        self.DynamicXmlFile:setBool(xmlFarmId .. ".players.id_" .. key .."." .. playerKey .. "#" .. entryName, entryValue)
                                     end
                                 elseif type(playerValue) == "number" then
                                     if math.floor(playerValue) == playerValue then
-                                        self.DynamicXmlFile:setInt(xmlFarmId .. ".players#" .. playerKey, playerValue)
+                                        self.DynamicXmlFile:setInt(xmlFarmId .. ".players.id_" .. key .."#" .. playerKey, playerValue)
                                     else
-                                        self.DynamicXmlFile:setFloat(xmlFarmId .. ".players#" .. playerKey, playerValue)
+                                        self.DynamicXmlFile:setFloat(xmlFarmId .. ".players.id_" .. key .."#" .. playerKey, playerValue)
                                     end
                                 elseif type(playerValue) == "boolean" then
-                                    self.DynamicXmlFile:setBool(xmlFarmId .. ".players#" .. playerKey, playerValue)
+                                    self.DynamicXmlFile:setBool(xmlFarmId .. ".players.id_" .. key .."#" .. playerKey, playerValue)
                                 elseif type(playerValue) == "string" then
-                                    self.DynamicXmlFile:setString(xmlFarmId .. ".players#" .. playerKey, playerValue)
+                                    self.DynamicXmlFile:setString(xmlFarmId .. ".players.id_" .. key .."#" .. playerKey, playerValue)
                                 else
-                                    Utilities:print("error: farm->players->" .. playerKey .. "-> value is of " .. type(playerValue) .." type (Int/Float/Boolean/String expected)")
+                                    Utilities:print("error: farm->players->" .. key .. "->" .. playerKey .. "-> value is of " .. type(playerValue) .." type (Int/Float/Boolean/String expected)")
                                 end
                             end
                         end
+                    end
+                end
+                -- farm contractors
+                if farm.contractingFor ~= nil then
+                    for farmId, isContractor in ipairs(farm.contractingFor) do
+                        self.DynamicXmlFile:setBool(xmlFarmId .. ".contractingFor.id_" .. farmId .."#isContractor", isContractor)
                     end
                 end
                 -- farm statistics
