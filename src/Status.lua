@@ -11,7 +11,7 @@ function FarmSimStatus:init()
         Utilities:print("error: not a server")
         return
     end
-    -- run hearbeat after one second to allow everything to initialize
+    -- run hearbeat after X seconds to allow everything to initialize
     addTimer(1000 * 10, "heartbeat", self)
 end
 
