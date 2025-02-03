@@ -7,6 +7,7 @@ FarmSimStatus.updateInterval = 1000 * 60 * 1 -- update every minute
 -- initialize plugin
 function FarmSimStatus:init()
     Utilities:print("FarmSimStatus:init()")
+    -- ignore client machines and only run on servers
     if (g_currentMission:getIsServer() == false) then
         Utilities:print("error: not a server")
         return
