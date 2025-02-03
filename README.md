@@ -7,7 +7,7 @@
 
 ![Farming Simulator Status Plugin Logo](https://github.com/Kandru/farmsim-status-plugin/blob/main/icon.jpg?raw=true)
 
-This plugin gives a almost complete overview about your Farming Simulator 25 server from your webbrowser. It contains two parts: a LUA plugin and a Python script. The LUA plugin gathers data every minute and writes it to an XML file. The Python script reads this file and creates a website which is updated regularly.
+This plugin offers a detailed overview of your Farming Simulator 25 server directly from your web browser. It includes two main components: a LUA plugin and a Python script. The LUA plugin collects data regularly and writes it to an XML file. The Python script reads this file and generates a regularly updated website.
 
 See https://github.com/kandru/farmsim-status-gui for more information about the GUI.
 
@@ -25,22 +25,20 @@ See https://github.com/kandru/farmsim-status-gui for more information about the 
 
 Coming soon
 
-## Plugin Installation (manual)
+## Plugin Installation / Update (manual)
 
 1. Download and extract the latest release from the [GitHub releases page](https://github.com/Kandru/farmsim-status-plugin/releases/)
 2. Move the .zip file into your mods directory like every other mod on both server and client
 3. Restart game / server
 
-## Plugin Update (manual)
-
-Simply overwrite the .zip file with the latest release.
-
 ## Development
 
-- make code changes
-- check code changes with the official TestRunner tool: https://forum.giants-software.com/viewtopic.php?t=187502
+- Fork this repository
+- Make desired code changes
+- Check code changes with the official TestRunner tool: https://forum.giants-software.com/viewtopic.php?t=187502
+- Create a pull request on GitHub
 
-## Other useful stuff
+## Other useful stuff used for debugging purposes
 
 - FS25 data dump https://github.com/w33zl/FS25_DataDump
 - FS25 Modding Guidelines https://forum.giants-software.com/viewtopic.php?t=209170
