@@ -7,10 +7,22 @@
     </title>
     <description>
         <en>
-<![CDATA[This Mod exports server data and displays it on a website of your choice. Works best with our GUI tool https://github.com/Kandru/farmsim-status-gui :)
+            <![CDATA[This plugin provides a comprehensive overview of your Farming Simulator 25 server directly from your web browser. It consists of two main components: a LUA plugin and a Python script. The LUA plugin collects data regularly and writes it to an XML file. The Python script reads this file and generates a regularly updated website.
 
-Changelog v1.0.0.0
-- Initial Version]]>
+            Features:
+            - Retrieve mission information
+            - Retrieve player information
+            - Retrieve farm information
+            - Retrieve farmland details
+            - (Upcoming) Retrieve player positions
+            - (Upcoming) Retrieve vehicle positions
+            - (Upcoming) Retrieve stationary building positions
+
+            This plugin ensures you have all the essential information about your server at your fingertips, enhancing your Farming Simulator 25 experience.
+
+            Check our GitHub projects for a complete change log and version history:
+            - Gameserver Plugin: https://github.com/kandru/farmsim-status-plugin
+            - GUI: https://github.com/kandru/farmsim-status-gui]]>
         </en>
     </description>
     <iconFilename>icon.dds</iconFilename>
