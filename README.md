@@ -5,9 +5,21 @@
 [![issues - farmsim-status-plugin](https://img.shields.io/github/issues/Kandru/farmsim-status-plugin?color=darkgreen)](https://github.com/Kandru/farmsim-status-plugin/issues)
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=C2AVYKGVP9TRG)
 
-This plugin gives a almost complete overview about your Farming Simulator 25 server from your webbrowser. It contains two parts: a LUA plugin and a Python script. The LUA plugin gathers data every minute and writes it to a XML file. The Python script reads this file and creates a website which is updated regularly.
+![Farming Simulator Status Plugin Logo](https://github.com/Kandru/farmsim-status-plugin/blob/main/icon.jpg?raw=true)
 
-See https://github.com/kandru/farmsim-status-gui for more information.
+This plugin gives a almost complete overview about your Farming Simulator 25 server from your webbrowser. It contains two parts: a LUA plugin and a Python script. The LUA plugin gathers data every minute and writes it to an XML file. The Python script reads this file and creates a website which is updated regularly.
+
+See https://github.com/kandru/farmsim-status-gui for more information about the GUI.
+
+## Road Map
+
+- [X] Get Mission Information
+- [X] Get Player Information
+- [X] Get Farm Information
+- [ ] Get Player Positions
+- [ ] Get Vehicle Positions
+- [ ] Get Stationary Building Positions
+- [X] Get Farmlands
 
 ## Plugin Installation (automatic)
 
@@ -16,8 +28,8 @@ Coming soon
 ## Plugin Installation (manual)
 
 1. Download and extract the latest release from the [GitHub releases page](https://github.com/Kandru/farmsim-status-plugin/releases/)
-2. Move the .zip file into your mods directory like every other mod
-3. Restart game/server
+2. Move the .zip file into your mods directory like every other mod on both server and client
+3. Restart game / server
 
 ## Plugin Update (manual)
 
