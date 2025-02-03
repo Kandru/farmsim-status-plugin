@@ -5,44 +5,60 @@ function FarmSimStatus:getServerInformation()
         Utilities:print("error: xmlFile is nil")
         return
     end
-    self.DynamicXmlFile:setString("server#lastUpdate", getDate("%Y/%m/%d %H:%M:%S"))
+    local xmlServerId = "server"
+    self.DynamicXmlFile:setString(xmlServerId .. "#lastUpdate", getDate("%Y/%m/%d %H:%M:%S"))
     if g_currentMission ~= nil then
         -- map infos
         local map = g_mapManager:getMapById(g_currentMission.missionInfo.mapId)
         if map ~= nil and map.title ~= nil then
-            self.DynamicXmlFile:setString("server.map#name", map.title)
+            self.DynamicXmlFile:setString(xmlServerId .. ".map#name", map.title)
         end
-        self.DynamicXmlFile:setInt("server.map#size", g_currentMission.terrainSize)
+        self.DynamicXmlFile:setInt(xmlServerId .. ".map#size", g_currentMission.terrainSize)
         if g_currentMission.mapOverlayGenerator ~= nil and g_currentMission.mapOverlayGenerator.farmlandManager ~= nil then
-            self.DynamicXmlFile:setInt("server.map#width", g_currentMission.mapOverlayGenerator.farmlandManager.localMapWidth)
-            self.DynamicXmlFile:setInt("server.map#height", g_currentMission.mapOverlayGenerator.farmlandManager.localMapHeight)
+            self.DynamicXmlFile:setInt(xmlServerId .. ".map#width", g_currentMission.mapOverlayGenerator.farmlandManager.localMapWidth)
+            self.DynamicXmlFile:setInt(xmlServerId .. ".map#height", g_currentMission.mapOverlayGenerator.farmlandManager.localMapHeight)
         end
         -- mission infos
-        self.DynamicXmlFile:setBool("server.mission#isServer", g_currentMission:getIsServer())
         if g_currentMission.missionInfo ~= nil then
-            self.DynamicXmlFile:setBool("server.mission#isMultiplayer", g_currentMission.missionDynamicInfo.isMultiplayer)
-            self.DynamicXmlFile:setString("server.mission#creationDate", g_currentMission.missionInfo.creationDate)
-            self.DynamicXmlFile:setBool("server.mission#hasInitiallyOwnedFarmlands", g_currentMission.missionInfo.hasInitiallyOwnedFarmlands)
-            self.DynamicXmlFile:setInt("server.mission#autoSaveInterval", g_currentMission.missionInfo.autoSaveInterval)
-            self.DynamicXmlFile:setFloat("server.mission#playTime", g_currentMission.missionInfo.playTime)
-            self.DynamicXmlFile:setInt("server.mission#initialMoney", g_currentMission.missionInfo.initialMoney)
-            self.DynamicXmlFile:setInt("server.mission#initialLoan", g_currentMission.missionInfo.initialLoan)
-            self.DynamicXmlFile:setInt("server.mission#growthMode", g_currentMission.missionInfo.growthMode)
-            self.DynamicXmlFile:setBool("server.mission#stonesEnabled", g_currentMission.missionInfo.stonesEnabled)
-            self.DynamicXmlFile:setBool("server.mission#isSnowEnabled", g_currentMission.missionInfo.isSnowEnabled)
-            self.DynamicXmlFile:setBool("server.mission#weedsEnabled", g_currentMission.missionInfo.weedsEnabled)
-            self.DynamicXmlFile:setBool("server.mission#stopAndGoBraking", g_currentMission.missionInfo.stopAndGoBraking)
-            self.DynamicXmlFile:setBool("server.mission#plowingRequiredEnabled", g_currentMission.missionInfo.plowingRequiredEnabled)
-            self.DynamicXmlFile:setBool("server.mission#fruitDestruction", g_currentMission.missionInfo.fruitDestruction)
-            self.DynamicXmlFile:setBool("server.mission#limeRequired", g_currentMission.missionInfo.limeRequired)
-            self.DynamicXmlFile:setBool("server.mission#trafficEnabled", g_currentMission.missionInfo.trafficEnabled)
-            self.DynamicXmlFile:setBool("server.mission#startWithGuidedTour", g_currentMission.missionInfo.startWithGuidedTour)
-            self.DynamicXmlFile:setBool("server.mission#automaticMotorStartEnabled", g_currentMission.missionInfo.automaticMotorStartEnabled)
-            self.DynamicXmlFile:setBool("server.mission#supportsSaving", g_currentMission.missionInfo.supportsSaving)
-            self.DynamicXmlFile:setBool("server.mission#introductionHelpActive", g_currentMission.missionInfo.introductionHelpActive)
-            self.DynamicXmlFile:setBool("server.mission#helperBuyFuel", g_currentMission.missionInfo.helperBuyFuel)
-            self.DynamicXmlFile:setBool("server.mission#helperBuyFertilizer", g_currentMission.missionInfo.helperBuyFertilizer)
-            self.DynamicXmlFile:setBool("server.mission#helperBuySeeds", g_currentMission.missionInfo.helperBuySeeds)
+            for missionKey, missionValue in pairs(g_currentMission.missionInfo) do
+                if missionValue ~= nil and missionKey ~= nil and not string.find(tostring(missionKey):lower(), "xml") then
+                    if type(missionValue) == "number" then
+                        if math.floor(missionValue) == missionValue then
+                            self.DynamicXmlFile:setInt(xmlServerId .. "#" .. missionKey, missionValue)
+                        else
+                            self.DynamicXmlFile:setFloat(xmlServerId .. "#" .. missionKey, missionValue)
+                        end
+                    elseif type(missionValue) == "boolean" then
+                        self.DynamicXmlFile:setBool(xmlServerId .. "#" .. missionKey, missionValue)
+                    elseif type(missionValue) == "string" then
+                        self.DynamicXmlFile:setString(xmlServerId .. "#" .. missionKey, missionValue)
+                    elseif (type(missionValue) ~= "table") then
+                        Utilities:print("error: server->" .. missionKey .. "-> value is of " .. type(missionValue) .." type (Int/Float/Boolean/String expected)")
+                    end
+                end
+            end
+        end
+        -- player infos
+        if g_currentMission.userManager.users ~= nil then
+            for i, player in ipairs(g_currentMission.userManager.users) do
+                for playerKey, playerValue in pairs(player) do
+                    if playerValue ~= nil then
+                        if type(playerValue) == "number" then
+                            if math.floor(playerValue) == playerValue then
+                                self.DynamicXmlFile:setInt(xmlServerId .. ".players.id_" .. i .. "#" .. playerKey, playerValue)
+                            else
+                                self.DynamicXmlFile:setFloat(xmlServerId .. ".players.id_" .. i .. "#" .. playerKey, playerValue)
+                            end
+                        elseif type(playerValue) == "boolean" then
+                            self.DynamicXmlFile:setBool(xmlServerId .. ".players.id_" .. i .. "#" .. playerKey, playerValue)
+                        elseif type(playerValue) == "string" then
+                            self.DynamicXmlFile:setString(xmlServerId .. ".players.id_" .. i .. "#" .. playerKey, playerValue)
+                        elseif (type(playerValue) ~= "table") then
+                            Utilities:print("error: server->player->id_" ..  i .. "->" .. playerKey .. "-> value is of " .. type(playerValue) .." type (Int/Float/Boolean/String expected)")
+                        end
+                    end
+                end
+            end
         end
     end
 end
