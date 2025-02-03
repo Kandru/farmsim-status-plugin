@@ -51,10 +51,37 @@ function FarmSimStatus:getFarmlandInformation()
                 end
                 -- field polygons
                 if farmland.field.densityMapPolygon ~= nil and farmland.field.densityMapPolygon.pointsX ~= nil and farmland.field.densityMapPolygon.pointsZ ~= nil then
+                    -- get all polygons of a field
+                    local fieldPolygons = {}
                     for key, pointX in ipairs(farmland.field.densityMapPolygon.pointsX) do
                         if farmland.field.densityMapPolygon.pointsZ[key] ~= nil then
-                            self.DynamicXmlFile:setFloat(xmlFarmlandId .. ".polygons.id_" .. key .. "#x", pointX)
-                            self.DynamicXmlFile:setFloat(xmlFarmlandId .. ".polygons.id_" .. key .. "#y", farmland.field.densityMapPolygon.pointsZ[key])
+                            fieldPolygons[key] = { x = pointX, y = farmland.field.densityMapPolygon.pointsZ[key] }
+                        end
+                    end
+                    -- get the corners of the field (thx ChatGPT Oo, need to check if this works)
+                    for key, point in ipairs(fieldPolygons) do
+                        local tmpPolygons = {}
+                        local startX, startY = point.x, point.y
+                        local widthX, widthY = 0, 0
+                        local heightX, heightY = 0, 0
+                        if key < #fieldPolygons then
+                            local nextPoint = fieldPolygons[key + 1]
+                            widthX, widthZ = nextPoint.x - startX, nextPoint.y - startZ
+                        end
+                        if key > 1 then
+                            local prevPoint = fieldPolygons[key - 1]
+                            heightX, heightZ = startX - prevPoint.x, startZ - prevPoint.y
+                        end
+                        local corners = {
+                            { x = startX, y = startY },
+                            { x = startX + widthX, y = startY + widthY },
+                            { x = startX + heightX, y = startY + heightY },
+                            { x = startX + heightX + widthX, y = startY + widthY + heightY }
+                        }
+                        for cornerIndex, corner in ipairs(corners) do
+                            self.DynamicXmlFile:setFloat(xmlFarmlandId .. ".polygons.id_" .. key .. "#x", corner.x)
+                            self.DynamicXmlFile:setFloat(xmlFarmlandId .. ".polygons.id_" .. key .. "#y", corner.y)
+                            self.DynamicXmlFile:setFloat(xmlFarmlandId .. ".polygons.id_" .. key .. "#index", cornerIndex - 1)
                         end
                     end
                 end
