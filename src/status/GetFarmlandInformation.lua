@@ -66,11 +66,11 @@ function FarmSimStatus:getFarmlandInformation()
                         local heightX, heightY = 0, 0
                         if key < #fieldPolygons then
                             local nextPoint = fieldPolygons[key + 1]
-                            widthX, widthZ = nextPoint.x - startX, nextPoint.y - startZ
+                            widthX, widthY = nextPoint.x - startX, nextPoint.y - startY
                         end
                         if key > 1 then
                             local prevPoint = fieldPolygons[key - 1]
-                            heightX, heightZ = startX - prevPoint.x, startZ - prevPoint.y
+                            heightX, heightY = startX - prevPoint.x, startY - prevPoint.y
                         end
                         local corners = {
                             { x = startX, y = startY },
