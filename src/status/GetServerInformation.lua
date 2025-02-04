@@ -21,7 +21,7 @@ function FarmSimStatus:getServerInformation()
         -- mission infos
         if g_currentMission.missionInfo ~= nil then
             for missionKey, missionValue in pairs(g_currentMission.missionInfo) do
-                if missionValue ~= nil and missionKey ~= nil and not string.find(tostring(missionKey):lower(), "xml") then
+                if missionValue ~= nil and missionKey ~= nil and not string.find(tostring(missionKey):lower(), "xml") and not string.find(tostring(missionKey):lower(), "directory") then
                     if type(missionValue) == "number" then
                         if math.floor(missionValue) == missionValue then
                             self.DynamicXmlFile:setInt(xmlServerId .. "#" .. missionKey, missionValue)
