@@ -8,8 +8,8 @@ function FarmSimStatus:getFarmInformation()
     if g_farmManager ~= nil then
         -- iterate through farms
         for i, farm in ipairs(g_farmManager.farms) do
-            local xmlFarmId = "server.farms.id_" .. i
             if farm.showInFarmScreen == true then
+                local xmlFarmId = "server.farms.id_" .. farm.farmId
                 -- farm infos
                 for farmKey, farmValue in pairs(farm) do
                     if farmValue ~= nil and farmKey ~= "password" then
